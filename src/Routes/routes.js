@@ -7,6 +7,7 @@ import { asynchronize } from './asynchronize';
 const AppBar = asynchronize(() => import('./AppBar'));
 
 const Main = asynchronize(() => import('../Main'));
+const PostCreation = asynchronize(() => import("../Posts/Creation"));
 
 const Route = props => {
     const renderComponent = React.useCallback(
@@ -21,6 +22,7 @@ const Route = props => {
 const routeConfig = location => (
     <>
         <Route exact path="/" component={Main} noBoxShadow withApp />
+        <Route exact path="/post" component={PostCreation} withApp />
 
         <Route exact path="/error" component={NotFoundPage} />
         <Redirect

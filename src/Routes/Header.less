@@ -2,12 +2,29 @@
     background: #FFF;
     position  : fixed;
     width     : 100%;
+    top       : 0;
+    transition: top 300ms;
+    display: flex;
 
+    .container {
+        width: 100%;
+    }
+
+    .avatar{
+        float: right;
+        margin: 0 20px;
+        padding: 8px;
+        height: 48px;
+    }
     .logo {
         float      : left;
         line-height: 48px;
         height     : 48px;
-        padding    : 10px;
+        padding    : 8px;
         margin     : 0 20px;
+    }
+
+    &.hide {
+        top: -48px;
     }
 }

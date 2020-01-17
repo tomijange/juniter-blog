@@ -1,11 +1,10 @@
 import React from 'react';
-import { Layout, Breadcrumb } from 'antd';
+import { Layout } from 'antd';
 import Header from './Header';
 import './AppBar.less';
-import { Switch, Route } from 'react-router-dom';
 
 
-const { Content, Footer } = Layout;
+const {  Footer } = Layout;
 
 const AppBar = ({children}) => (
     <>
