@@ -1,13 +1,34 @@
-.main-layout {
-    min-height: 100%;
+@wide-screen-down: ~"(max-width: 1199px)";
+@desktop-down: ~"(max-width: 991px)";
+@tablet-down: ~"(max-width: 767px)";
+@phone-down: ~"(max-width: 480px)";
+@small-phone-down: ~"(max-width: 320px)";
 
-    .main-content {
-        background: white;
+.main-layout {
+  min-height: 100%;
+
+  .main-content {
+    display: flex;
+    // flex-grow: 1;
+    width: 100%;
+
+    @media @wide-screen-down {
+      margin: 0 auto;
+      max-width: 800px;
     }
+
+    @media @tablet-down {
+      margin: 0;
+    }
+  }
+
+  .main-content-wrapper {
+    margin-top: 48px;
+    display: flex;
+
+    background: white;
+    flex: 1;
+
     
-    .main-content-wrapper {
-        margin-top: 64px;
-        padding: 0 20px;
-        flex: 1;
-    }
+  }
 }

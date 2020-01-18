@@ -4,7 +4,8 @@ import {
   RichUtils,
   getDefaultKeyBinding,
   Modifier,
-  convertToRaw
+  convertToRaw,
+  convertFromRaw
 } from 'draft-js';
 import Editor from 'draft-js-plugins-editor';
 import createInlineToolbarPlugin from 'draft-js-inline-toolbar-plugin';
@@ -21,7 +22,9 @@ import ButtonGroup from 'antd/lib/button/button-group';
 
 type Props = {
   classList: Array<string> | string,
-  readOnly: Boolean
+  readOnly: Boolean,
+  content: Draft.Model.Encoding.RawDraftContentState,
+  onChange: Function<Draft.Model.Encoding.RawDraftContentState>;
 };
 
 const linkPlugin = createLinkPlugin({
@@ -32,9 +35,19 @@ const { LinkButton } = linkPlugin;
 const inlineToolbarPlugin = createInlineToolbarPlugin();
 const { InlineToolbar } = inlineToolbarPlugin;
 
-const DraftEditor = ({ readOnly, classList }: Props) => {
-  const [editorState, setEditorState] = React.useState(EditorState.createEmpty());
+const DraftEditor = ({ readOnly, classList, content, onChange }: Props) => {
+  const [state, setState] = React.useState(
+    content != null ?
+      EditorState.createWithContent(
+        convertFromRaw(content))
+      : EditorState.createEmpty()
+  );
   const editorRef = useRef();
+
+  function setEditorState(editorState) {
+    setState(editorState);
+    onChange && onChange(convertToRaw(editorState.getCurrentContent()));
+  }
 
   const getBlockStyle = (block) => {
     switch (block.getType()) {
@@ -46,13 +59,13 @@ const DraftEditor = ({ readOnly, classList }: Props) => {
   };
 
   const toggleInlineStyle = (style) => {
-    setEditorState(RichUtils.toggleInlineStyle(editorState, style));
+    setEditorState(RichUtils.toggleInlineStyle(state, style));
   };
 
   const keyBinding = (e) => {
     if (e.keyCode === 13 && e.shiftKey) return 'soft-break';
-    const selection = editorState.getSelection();
-    const block = editorState
+    const selection = state.getSelection();
+    const block = state
       .getCurrentContent()
       .getBlockForKey(selection.getStartKey());
     if (e.key === 'Tab' && block.getType() === 'code-block') return 'code-tab';
@@ -66,11 +79,11 @@ const DraftEditor = ({ readOnly, classList }: Props) => {
       return 'handled';
     }
     if (command === 'soft-break') {
-      setEditorState(RichUtils.insertSoftNewline(editorState));
+      setEditorState(RichUtils.insertSoftNewline(state));
       return 'handled';
     }
     if (command === 'code-tab') {
-      const currentState = editorState;
+      const currentState = state;
       const newBlockState = Modifier.replaceText(
         currentState.getCurrentContent(),
         currentState.getSelection(),
@@ -90,7 +103,7 @@ const DraftEditor = ({ readOnly, classList }: Props) => {
   };
 
   const toggleBlockType = (type) => {
-      setEditorState(RichUtils.toggleBlockType(editorState, type));
+      setEditorState(RichUtils.toggleBlockType(state, type));
   };
 
   const handleChange = (newEditorState) => {
@@ -98,7 +111,7 @@ const DraftEditor = ({ readOnly, classList }: Props) => {
     const block = newEditorState
       .getCurrentContent()
       .getBlockForKey(selection.getStartKey());
-    const currentContent = editorState.getCurrentContent();
+    const currentContent = state.getCurrentContent();
     const newContent = newEditorState.getCurrentContent();
     if (block.getType() === 'code-block' && newContent.equals(currentContent)) {
       const data = block.getData().merge({ language: 'javascript' });
@@ -129,13 +142,13 @@ const DraftEditor = ({ readOnly, classList }: Props) => {
       {!readOnly && (
         <Toolbar>
           <BlockStyleControls
-            editorState={editorState}
+            editorState={state}
             onToggle={toggleBlockType}
           />
           <button
             className="btn btn-primary"
             onClick={() => {
-              console.log(convertToRaw(editorState.getCurrentContent()));
+              console.log(convertToRaw(state.getCurrentContent()));
             }}
           >
             Convert to Raw JS
@@ -143,7 +156,7 @@ const DraftEditor = ({ readOnly, classList }: Props) => {
         </Toolbar>
       )}
       <Editor
-        editorState={editorState}
+        editorState={state}
         plugins={[...plugins, inlineToolbarPlugin, linkPlugin]}
         ref={editorRef}
         readOnly={readOnly}
@@ -158,7 +171,7 @@ const DraftEditor = ({ readOnly, classList }: Props) => {
           {(externalProps) => (
             <ButtonGroup className="inline-toolbar-draft">
               <InlineStyleControls
-                editorState={editorState}
+                editorState={state}
                 onToggle={toggleInlineStyle}
                 {...externalProps}
               />
