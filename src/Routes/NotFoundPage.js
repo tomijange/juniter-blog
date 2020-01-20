@@ -1,6 +1,6 @@
 import React from 'react';
 import { withRouter, Redirect, Link } from 'react-router-dom';
-import { Button, Typography, Collapse, Layout } from 'antd';
+import { Button, Typography, Collapse, Layout, Result } from 'antd';
 import './NotFoundPage.less';
 const { Panel } = Collapse;
 
@@ -22,57 +22,37 @@ function NotFoundPage(props) {
     return (
         <Layout className="not-found-page">
             <Layout.Content className="main">
-                <Typography.Title level={4}>
-                    {message}
-                </Typography.Title>
-                <Link to="/" replace={true}>
-                    <Button icon="left" size="large">Zurück</Button>
-                </Link>
-                {retry && <Button onClick={retry}>Erneut versuchen</Button>}
+                <Result
+                    status={`${error}`}
+                    title={`${error}`}
+                    subTitle={message}
+                    extra={<div>
+                        <Link to="/" replace={true}>
+                            <Button type="primary" icon="left">Zurück</Button>
+                        </Link>
+                        {retry && <Button type="default" onClick={retry}>Back Home</Button>}
+                    </div>}
+                />
                 <Collapse className="collapse" bordered={false}>
                     <Panel header="Details">
-                        <div>
-                            <Typography variant="body1" paragraph>
-                                Errorcode: {error}
-                            </Typography>
-                            <Typography variant="body2" paragraph>
-                                {messageProp &&
-                                    messageProp.split &&
-                                    messageProp.split('\n').map((paragraph, i) => (
-                                        <React.Fragment key={i}>
-                                            {paragraph}
-                                            <br />
-                                        </React.Fragment>
-                                    ))}
-                            </Typography>
-                        </div>
+                        <Typography.Text>
+                            Errorcode: {error}
+                        </Typography.Text>
+                        <Typography.Text>
+                            {messageProp &&
+                                messageProp.split &&
+                                messageProp.split('\n').map((paragraph, i) => (
+                                    <React.Fragment key={i}>
+                                        {paragraph}
+                                        <br />
+                                    </React.Fragment>
+                                ))}
+                        </Typography.Text>
                     </Panel>
                 </Collapse>
             </Layout.Content>
         </Layout>
     );
 }
-
-// const styles = theme => ({
-//     root: {
-//         height: '100%',
-//         width: '100%',
-//         overflow: 'auto',
-//         padding: `12.5% ${theme.spacing(4)}px`,
-//         boxSizing: 'border-box',
-//     },
-//     paper: {
-//         display: 'flex',
-//         alignItems: 'center',
-//         justifyContent: 'space-between',
-//         flexDirection: 'column',
-//         padding: theme.spacing(2),
-//     },
-//     expansionPanel: {
-//         '&:before': {
-//             content: 'unset',
-//         },
-//     },
-// });
 
 export default withRouter(NotFoundPage);

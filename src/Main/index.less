@@ -1,4 +1,24 @@
 
 .main {
-    
+    padding: 16px 130px 4px 16px;
+    position: relative;
+
+    @media (max-width: 800px){
+        padding: 16px 4px;
+    }
+
+    .affix {
+        @media (max-width: 800px) {
+            display: none;
+        }
+        position: absolute;
+        right: 10px;
+        top: 110px;
+    }
+
+    .posts-container {
+        article {
+            margin-bottom: 16px;
+        }
+    }
 }

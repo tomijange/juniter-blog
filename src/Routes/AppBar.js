@@ -15,7 +15,7 @@ const AppBar = ({children}) => (
                     {children}
                 </div>
             </section>
-            <Footer style={{ textAlign: 'center' }}>Juniter</Footer>
+            <Footer style={{ textAlign: 'center' }}>Juniter / Company Consulting Team e.V.</Footer>
         </Layout>
     </>
 );

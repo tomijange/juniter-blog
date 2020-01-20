@@ -1,24 +1,19 @@
-@wide-screen-down: ~"(max-width: 1199px)";
-@desktop-down: ~"(max-width: 991px)";
-@tablet-down: ~"(max-width: 767px)";
-@phone-down: ~"(max-width: 480px)";
-@small-phone-down: ~"(max-width: 320px)";
 
 .main-layout {
   min-height: 100%;
 
   .main-content {
     display: flex;
-    // flex-grow: 1;
     width: 100%;
 
-    @media @wide-screen-down {
+    @media (min-width: 800px) {
       margin: 0 auto;
       max-width: 800px;
     }
 
-    @media @tablet-down {
-      margin: 0;
+    @media (min-width: 1200px) {
+        margin   : 0 auto;
+        max-width: 1000px;
     }
   }
 
@@ -26,7 +21,7 @@
     margin-top: 48px;
     display: flex;
 
-    background: white;
+    background: rgb(240, 240, 240);
     flex: 1;
 
     
