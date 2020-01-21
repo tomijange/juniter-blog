@@ -7,7 +7,7 @@ import { asynchronize } from './asynchronize';
 const AppBar = asynchronize(() => import('./AppBar'));
 
 const Main = asynchronize(() => import('../Main'));
-const PostCreation = asynchronize(() => import("../Posts/Creation"));
+const PostCreation = asynchronize(() => import("../Posts/Creation/index"));
 
 const Route = props => {
     const renderComponent = React.useCallback(

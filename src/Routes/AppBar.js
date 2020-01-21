@@ -9,12 +9,14 @@ const {  Footer } = Layout;
 const AppBar = ({children}) => (
     <>
         <Layout className="main-layout">
-            <Header></Header>
-            <section className="main-content-wrapper">
-                <div className="main-content">
-                    {children}
-                </div>
-            </section>
+            <Header>
+                <Layout.Content className="main-content-wrapper">
+                    <div className="main-content">
+                        {children}
+                    </div>
+                </Layout.Content>
+            </Header>
+            
             <Footer style={{ textAlign: 'center' }}>Juniter / Company Consulting Team e.V.</Footer>
         </Layout>
     </>

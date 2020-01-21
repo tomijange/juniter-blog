@@ -13,8 +13,7 @@ const Main = () => (
         </section>
         <Affix className="affix" offsetTop={58}>
             <div>
-            Test
-
+                
             </div>
         </Affix>
     </div>
