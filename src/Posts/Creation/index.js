@@ -1,74 +1,41 @@
+import React from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
+import PostCreation from './PostCreation';
 
+function EditPage({ post, match, startPostCreation, started }) {
+    let { slug } = match.params;
 
-import React from "react";
-import { Editor } from "../DraftEditor";
-import { Form, Icon, Input, Button } from "antd";
-import "./index.less";
-import Post from "../Post";
+    // start post creation depending on post or type
+    React.useEffect(() => {
+        startPostCreation(post);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [slug, startPostCreation]);
 
-function hasErrors(fieldsError) {
-    return Object.keys(fieldsError).some(field => fieldsError[field]);
+    if (!started) {
+        return null;
+    }
+
+    return <PostCreation post={post} />;
 }
 
-function PostCreation({ form }) {
-    const { getFieldDecorator, getFieldsError } = form;
-    return (
-        <Form className="post-creation">
-            <Post
-                className="post"
-                title={
-                getFieldDecorator("title", {
-                    rules: [{ required: true, message: "Es wird ein Titel benötigt" }]
-                })(
-                    <Input
-                        style={{ border: 'none', font: 'inherit', boxShadow: 'none' }}
+const findPost = (posts, match) => {
+    const slug = match.params.slug;
+    return posts.find(post => post.slug === slug);
+};
 
-                        placeholder="Titel"
-                    />)}
+const mapStateToProps = (state, props) => ({
+    post: findPost(state.posts.posts, props.match),
+    started: state.postcreation.started,
+});
 
-                subTitle={
-                    <Form.Item>
-                        {getFieldDecorator("subTitle", {
-                            rules: [{ required: true, message: "Es wird ein Titel benötigt" }]
-                        })(
-                            <Input
-                                style={{ border: 'none' }}
-                                placeholder="Titel"
-                            />
-                        )}
-                    </Form.Item>
-                }
+const mapDispatchToProps = dispatch => ({
+    startPostCreation: post => dispatch({ type: 'START_POST_CREATION', payload: post }),
+});
 
-                content={
-                    <Form.Item>
-                        <Editor>
-
-                        </Editor>
-                    </Form.Item>
-                }
-            >
-
-
-            </Post>
-
-
-
-            <Form.Item>
-                <div className="buttons">
-                    <Button type="default" htmlType="reset">
-                        Abbrechen
-                    </Button>
-                    <Button
-                        type="primary"
-                        htmlType="submit"
-                        disabled={hasErrors(getFieldsError())}
-                    >
-                        Speichern
-                    </Button>
-                </div>
-            </Form.Item>
-        </Form >
-    );
-}
-
-export default Form.create({ name: "post-creation" })(PostCreation);
+export default withRouter(
+    connect(
+        mapStateToProps,
+        mapDispatchToProps
+    )(EditPage)
+);

@@ -20,11 +20,11 @@ import 'draft-js-static-toolbar-plugin/lib/plugin.css';
 import 'draft-js-emoji-plugin/lib/plugin.css';
 import "prismjs/themes/prism.css";
 import editorStyles from './editorStyles.module.css';
-import { toolbarPlugin, emojiPlugin, linkifyPlugin, createWithContent, codeEditorPlugin, prismPlugin } from './EditorPlugins';
+import { toolbarPlugin, emojiPlugin, linkifyPlugin, createWithContent, prismPlugin } from './EditorPlugins';
 
 export const { Toolbar } = toolbarPlugin;
 export const { EmojiSuggestions, EmojiSelect } = emojiPlugin;
-export const plugins = [toolbarPlugin, emojiPlugin, linkifyPlugin, codeEditorPlugin, prismPlugin];
+export const plugins = [toolbarPlugin, emojiPlugin, linkifyPlugin, prismPlugin];
 
 
 const text = 'Hier den Text eingeben. Oben findest du die Toolbar. Auch Smileys sind möglich 🙈. Gib dazu ein : ein.';

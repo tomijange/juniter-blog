@@ -6,15 +6,12 @@ import { CompositeDecorator, EditorState } from 'draft-js';
 import createEmojiPlugin from 'draft-js-emoji-plugin';
 import createLinkifyPlugin from 'draft-js-linkify-plugin';
 import createToolbarPlugin from 'draft-js-static-toolbar-plugin';
-import createCodeEditorPlugin from 'draft-js-code-editor-plugin';
 import createPrismPlugin from 'draft-js-prism-plugin';
-import PrismDecorator from 'draft-js-prism';
 
 
 export const toolbarPlugin = createToolbarPlugin();
 export const linkifyPlugin = createLinkifyPlugin();
 export const emojiPlugin = createEmojiPlugin();
-export const codeEditorPlugin = createCodeEditorPlugin();
 export const prismPlugin = createPrismPlugin({
     prism: Prism,
    

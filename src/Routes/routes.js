@@ -7,7 +7,8 @@ import { asynchronize } from './asynchronize';
 const AppBar = asynchronize(() => import('./AppBar'));
 
 const Main = asynchronize(() => import('../Main'));
-const PostCreation = asynchronize(() => import("../Posts/Creation/index"));
+const PostCreation = asynchronize(() => import("../Posts/Creation"));
+const JsonOutput = asynchronize(() => import("../JsonOutput"));
 
 const Route = props => {
     const renderComponent = React.useCallback(
@@ -22,8 +23,11 @@ const Route = props => {
 const routeConfig = location => (
     <>
         <Route exact path="/" component={Main} noBoxShadow withApp />
-        <Route exact path="/post" component={PostCreation} withApp />
+        <Route exact path="/post/:slug?" component={PostCreation} withApp />
+        <Route exact path="/json" component={JsonOutput} withApp />
+        
 
+        {/* errorhandling */}
         <Route exact path="/error" component={NotFoundPage} />
         <Redirect
             to={{
@@ -67,7 +71,7 @@ class Routes extends React.Component {
 
         let routeComponent = React.cloneElement(element, { location, computedMatch });
 
-        // render AppBar and AppDrawer
+        // render AppBar 
         if (currentRoute.withApp) {
             return (
                 <>

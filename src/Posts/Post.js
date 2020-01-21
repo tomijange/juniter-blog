@@ -1,7 +1,9 @@
 import React from 'react';
-import { PageHeader } from 'antd';
+import { PageHeader, Button } from 'antd';
 import './Post.less';
 import classnames from 'classnames';
+import CustomEditor from './Common/Editor';
+import ReadOnlyEditor from './Common/ReadOnlyEditor';
 
 function Content({ children }) {
     return (
@@ -13,7 +15,7 @@ function Content({ children }) {
 
 
 export default function Post(props) {
-    const { content, title, subTitle, user, className } = props;
+    const { content, title, slug, subTitle, user, className, onUpdateContent, edit, onEdit } = props;
     const { avatarUrl } = user || {};
 
     return (
@@ -22,15 +24,17 @@ export default function Post(props) {
                 className="page-header"
                 ghost={false}
                 title={title}
-                style={{
-                    border: '1px solid rgb(235, 237, 240)',
-                    width: '100%',
-                }}
                 subTitle={subTitle}
+                extra={
+                    onEdit &&
+                    <Button icon="edit" onClick={() => onEdit(`/post/${slug}`)}>
+                        Editieren
+                    </Button>
+                }
                 avatar={{ src: avatarUrl }}
             >
                 <Content>
-                    {content}
+                    {!edit ? <ReadOnlyEditor content={content} /> : <CustomEditor onChange={onUpdateContent} content={content} />}
                 </Content>
 
             </PageHeader>
