@@ -11,6 +11,8 @@ export default function postReducer(state = initalState, action) {
             const newPost = action.payload;
             return { ...state, posts: state.posts.map(post => post.slug === newPost.slug ? newPost : post) }
         }
+      case "DELETE_POST":
+        return {...state, posts: state.posts.filter(post => post.slug !== action.payload)}
         default: ;
     }
     return state;
